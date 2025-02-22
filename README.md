@@ -17,7 +17,7 @@
 
 </div>
 
-CipherFace is a fully homomorphic encryption-driven python framework for secure cloud-based facial recognition. It combines [DeepFace](https://github.com/serengil/deepface) and [TenSEAL](https://github.com/OpenMined/TenSEAL) libraries.
+CipherFace is a homomorphic encryption-driven python framework for secure cloud-based facial recognition. It combines [DeepFace](https://github.com/serengil/deepface) and [TenSEAL](https://github.com/OpenMined/TenSEAL) libraries.
 
 ## Installation [![PyPI](https://img.shields.io/pypi/v/cipherface.svg)](https://pypi.org/project/cipherface/)
 
