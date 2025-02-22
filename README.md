@@ -1,14 +1,51 @@
 # CipherFace
 
+<div align="center">
+
+[![Downloads](https://static.pepy.tech/personalized-badge/cipherface?period=total&units=international_system&left_color=grey&right_color=blue&left_text=downloads)](https://pepy.tech/project/cipherface)
+[![Stars](https://img.shields.io/github/stars/serengil/cipherface?color=yellow&style=flat&label=%E2%AD%90%20stars)](https://github.com/serengil/cipherface/stargazers)
+[![License](http://img.shields.io/:license-MIT-green.svg?style=flat)](https://github.com/serengil/cipherface/blob/master/LICENSE)
+[![Tests](https://github.com/serengil/cipherface/actions/workflows/tests.yml/badge.svg)](https://github.com/serengil/cipherface/actions/workflows/tests.yml)
+
+[![Blog](https://img.shields.io/:blog-sefiks.com-blue.svg?style=flat&logo=wordpress)](https://sefiks.com)
+[![YouTube](https://img.shields.io/:youtube-@sefiks-red.svg?style=flat&logo=youtube)](https://www.youtube.com/@sefiks?sub_confirmation=1)
+[![Twitter](https://img.shields.io/:follow-@serengil-blue.svg?style=flat&logo=x)](https://twitter.com/intent/user?screen_name=serengil)
+
+[![Support me on Patreon](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Dserengil%26type%3Dpatrons&style=flat)](https://www.patreon.com/serengil?repo=deepface)
+[![GitHub Sponsors](https://img.shields.io/github/sponsors/serengil?logo=GitHub&color=lightgray)](https://github.com/sponsors/serengil)
+[![Buy Me a Coffee](https://img.shields.io/badge/-buy_me_a%C2%A0coffee-gray?logo=buy-me-a-coffee)](https://buymeacoffee.com/serengil)
+
+</div>
+
 CipherFace is a fully homomorphic encryption-driven python framework for secure cloud-based facial recognition. It combines [DeepFace](https://github.com/serengil/deepface) and [TenSEAL](https://github.com/OpenMined/TenSEAL) libraries.
+
+## Installation [![PyPI](https://img.shields.io/pypi/v/cipherface.svg)](https://pypi.org/project/cipherface/)
+
+The easiest way to install CipherFace is to download it from [`PyPI`](https://pypi.org/project/cipherface/). It's going to install the library itself and its prerequisites as well.
+
+```shell
+$ pip install cipherface
+```
+
+Alternatively, you can also install deepface from its source code. Source code may have new features not published in pip release yet.
+
+```shell
+$ git clone https://github.com/serengil/cipherface.git
+$ cd cipherface
+$ pip install -e .
+```
+
+Once you installed the library, then you will be able to import it and use its functionalities.
+
+```python
+from cipherface import CipherFace
+```
 
 ## On Prem Encryption
 
 When you initialize a CipherFace object, it sets up an FHE cryptosystem. Currently, CipherFace supports the [`VGG-Face`](https://sefiks.com/2018/08/06/deep-face-recognition-with-keras/), [`Facenet`](https://sefiks.com/2018/09/03/face-recognition-with-facenet-in-keras/), and [`Facenet512`](https://sefiks.com/2018/09/03/face-recognition-with-facenet-in-keras/) facial recognition models, as well as Euclidean and cosine distance metrics.
 
 ```python
-from cipherface import CipherFace
-
 # build a cryptosystem
 onprem = CipherFace(
     facial_recognition_model="Facenet",
@@ -95,6 +132,20 @@ If you do like this work, then you can support it financially on [Patreon](https
 <a href="https://buymeacoffee.com/serengil">
 <img src="https://raw.githubusercontent.com/serengil/deepface/master/icon/bmc-button.png" width="25%" height="25%">
 </a>
+
+## Citation
+
+Please cite CipherFace in your publications if it helps your research. Here is its BibTex entry:
+
+```bibtex
+@misc{cipherface,
+  author       = {Serengil, Sefik Ilkin},
+  title        = {CipherFace: A Homomorphic Encryption-Driven Framework for Secure Cloud-Based Facial Recognition},
+  year         = {2024},
+  url          = {https://github.com/serengil/cipherface},
+  note         = {GitHub repository}
+}
+```
 
 ## Licence
 
