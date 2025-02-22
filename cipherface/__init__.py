@@ -162,6 +162,7 @@ class CipherFace:
             return embedding
 
         # Facenet and Facenet512 embeddings may have negative values, apply min-max
+        # pylint: disable=nested-min-max
         if self.facial_recognition_model == "Facenet":
             min_val = min(-5.06, min(embedding))
             max_val = max(5.04, max(embedding))
