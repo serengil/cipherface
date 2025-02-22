@@ -1,0 +1,3 @@
+numpy
+deepface
+tenseal==0.3.6

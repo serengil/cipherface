@@ -1,0 +1,13 @@
+**/__pycache__
+**/.DS_Store
+build/
+dist/
+Pipfile
+Pipfile.lock
+.mypy_cache/
+.idea/
+cipherface.egg-info/
+tests/dataset/*.pkl
+tests/*.ipynb
+tests/*.csv
+*.pyc
