@@ -48,7 +48,7 @@ class CipherFace:
             "VGG-Face",
             "Facenet",
             "Facenet512",
-        ], f"Unsppoted model {self.facial_recognition_model}"
+        ], f"Unsupported model {self.facial_recognition_model}"
 
         self.face_detector = face_detector
         assert self.face_detector in [

@@ -1,11 +1,18 @@
 # built-in dependencies
 import pytest
+import tempfile
+import os
 
 # project dependencies
 from cipherface import CipherFace
 from cipherface.commons.logger import Logger
 
 logger = Logger(__name__)
+
+
+temp_dir = tempfile.gettempdir()  # system's temp directory
+private_key_path = os.path.join(temp_dir, "private.txt")
+public_key_path = os.path.join(temp_dir, "public.txt")
 
 
 def test_e2e():
@@ -29,14 +36,14 @@ def test_e2e():
                     database[img_path] = embedding
                     break
 
-            onprem.export_private_key("/tmp/private.txt")
-            onprem.export_public_key("/tmp/public.txt")
+            onprem.export_private_key(private_key_path)
+            onprem.export_public_key(public_key_path)
 
             # cloud uses public key to securely embed the image
             cloud = CipherFace(
                 facial_recognition_model=model_name,
                 distance_metric=distance_metric,
-                cryptosystem="/tmp/public.txt",
+                cryptosystem=public_key_path,
             )
 
             target_path = "dataset/target.jpg"
@@ -67,6 +74,6 @@ def test_e2e():
                 )
                 assert (
                     is_verified is expected_classifications[idx]
-                ), f"{img_path} is misclassified. Expexted {expected_classifications[idx]}, but got {is_verified}"
+                ), f"{img_path} is misclassified. Expected {expected_classifications[idx]}, but got {is_verified}"
 
             logger.info(f"✅ e2e euclidean test done for {model_name} - {distance_metric}")
