@@ -23,9 +23,7 @@ def test_e2e():
     for model_name in model_names:
         for distance_metric in distance_metrics:
             # on prem generates cryptosystem with private - public key pair
-            onprem = CipherFace(
-                facial_recognition_model=model_name, distance_metric=distance_metric
-            )
+            onprem = CipherFace(model_name=model_name, distance_metric=distance_metric)
 
             img_paths = ["dataset/img1.jpg", "dataset/img2.jpg", "dataset/img3.jpg"]
 
@@ -41,7 +39,7 @@ def test_e2e():
 
             # cloud uses public key to securely embed the image
             cloud = CipherFace(
-                facial_recognition_model=model_name,
+                model_name=model_name,
                 distance_metric=distance_metric,
                 cryptosystem=public_key_path,
             )

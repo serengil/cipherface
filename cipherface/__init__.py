@@ -7,6 +7,7 @@ import base64
 from deepface import DeepFace
 import tenseal as ts
 import numpy as np
+from tqdm import tqdm
 
 # project dependencies
 from cipherface.commons.logger import Logger
@@ -16,19 +17,24 @@ from cipherface.commons import file_utils
 __version__ = "0.0.1"
 
 
+# pylint: disable=unknown-option-value
 class CipherFace:
     def __init__(
         self,
-        facial_recognition_model: str = "VGG-Face",
+        model_name: str = "VGG-Face",
         face_detector: str = "opencv",
         distance_metric: str = "euclidean",
         cryptosystem: Optional[str] = None,
         security_level: int = 128,
+        mode: str = "defensive",
+        n: Optional[int] = None,
+        q: Optional[List[int]] = None,
+        g: Optional[int] = None,
     ):
         """
         Build the CipherFace
         Args:
-            facial_recognition_model (str): facial recognition model name.
+            model_name (str): facial recognition model name.
                 Options: VGG-Face, Facenet, Facenet512
             face_detector (str): The path to the face detector.
                 Options: opencv, mtcnn, ssd, dlib, retinaface, mediapipe,
@@ -38,17 +44,25 @@ class CipherFace:
             cryptosystem (str): The path to the cryptosystem. Generates a random
                 private-public key pair if None.
             security_level (int): The security level of the cryptosystem. Default is 128.
+            mode (str): The mode of the cryptosystem. Options are offensive and defensive.
+                Default is defensive. In HE, you can offer same security level with different
+                p, q, g values. Offensive mode is offering same security level but slower.
+            n (int): You can set the security level with n, q, g values. P is the polynomial
+                modulus degree.
+            q (list of int): You can set the security level with n, q, g values. Q is the
+                coefficient modulus bit sizes.
+            g (int): You can set the security level with n, q, g values. G is the scale.
         """
 
         self.logger = Logger(__name__)
 
-        self.facial_recognition_model = facial_recognition_model
+        self.model_name = model_name
 
-        assert self.facial_recognition_model in [
+        assert self.model_name in [
             "VGG-Face",
             "Facenet",
             "Facenet512",
-        ], f"Unsupported model {self.facial_recognition_model}"
+        ], f"Unsupported model {self.model_name}"
 
         self.face_detector = face_detector
         assert self.face_detector in [
@@ -74,16 +88,36 @@ class CipherFace:
         ], f"Unsupported distance metric {self.distance_metric}"
 
         if cryptosystem is None:
-            if security_level == 128:
+            if n is not None and q is not None and g is not None:
+                assert len(q) >= 3
+                assert q[0] == q[-1]
+                assert q[1] == g
+            elif security_level == 128 and mode == "defensive":
                 n = 2**13
                 q = [60, 40, 40, 60]
                 g = 2**40
-            elif security_level == 129:
+            elif security_level == 128 and mode == "offensive":
                 n = 2**14
                 q = [31, 60, 60, 60, 60, 60, 60, 31]
                 g = 2**60
+            elif security_level == 192 and mode == "defensive":
+                n = 2**13
+                q = [60, 40, 60]
+                g = 2**40
+            elif security_level == 192 and mode == "offensive":
+                n = 2**14
+                q = [60, 60, 60, 60, 60]
+                g = 2**60
+            elif security_level == 256 and mode == "defensive":
+                n = 2**13
+                q = [30, 30, 30, 30]
+                g = 2**30
+            elif security_level == 256 and mode == "offensive":
+                n = 2**14
+                q = [45, 45, 45, 45, 45]
+                g = 2**45
             else:
-                raise ValueError("Security level not supported.")
+                raise ValueError(f"Security level {security_level} & mode {mode} not supported.")
 
             context = ts.context(ts.SCHEME_TYPE.CKKS, poly_modulus_degree=n, coeff_mod_bit_sizes=q)
             context.generate_galois_keys()
@@ -135,7 +169,7 @@ class CipherFace:
             embeddings (list of list of float): vector embeddings of the faces in the image.
         """
         results = DeepFace.represent(
-            img_path, model_name=self.facial_recognition_model, detector_backend=self.face_detector
+            img_path, model_name=self.model_name, detector_backend=self.face_detector
         )
 
         embeddings = []
@@ -155,7 +189,7 @@ class CipherFace:
             normalized_embedding (list of float): The normalized vector embedding.
         """
         # VGG-Face embeddings are already normalized and positive
-        if self.facial_recognition_model == "VGG-Face":
+        if self.model_name == "VGG-Face":
             return embedding
         # eucli
         if self.distance_metric == "euclidean":
@@ -163,14 +197,14 @@ class CipherFace:
 
         # Facenet and Facenet512 embeddings may have negative values, apply min-max
         # pylint: disable=nested-min-max
-        if self.facial_recognition_model == "Facenet":
+        if self.model_name == "Facenet":
             min_val = min(-5.06, min(embedding))
             max_val = max(5.04, max(embedding))
-        elif self.facial_recognition_model == "Facenet512":
+        elif self.model_name == "Facenet512":
             min_val = min(-4.78, min(embedding))
             max_val = max(4.79, max(embedding))
         else:
-            raise ValueError(f"Unsupported model {self.facial_recognition_model}")
+            raise ValueError(f"Unsupported model {self.model_name}")
 
         for idx, dim_val in enumerate(embedding):
             embedding[idx] = ((np.array(dim_val) - min_val) / (max_val - min_val)).tolist()
@@ -234,16 +268,27 @@ class CipherFace:
         encrypted_distance_proto = encrypted_distance_proto.serialize()
         return base64.b64encode(encrypted_distance_proto).decode("utf-8")
 
-    def securely_embed(self, img_path: str) -> List[str]:
+    def securely_embed(self, img_path: Union[str, List[str]]) -> Union[List[str], List[List[str]]]:
         """
         Represent a facial image to encrypted vector embedding.
             The both on prem and cloud can use this method to securely embed the image.
             Because it is depending on public key.
         Args:
-            img_path (str): The path to the image.
+            img_path (str or list of str): The path to the image(s).
         Returns:
-            encrypted_embedding (str): The encrypted embedding as base64 string.
+            encrypted_embedding (list of str, or list of list of str): The encrypted embedding
+                as base64 string. If input is list, then return type will be list of list of str.
         """
+        if isinstance(img_path, list):
+            embeddings = []
+            for current_img in tqdm(img_path):
+                current_embeddings = self.__represent(current_img)
+                encrypted_embeddings = [
+                    self.__encrypt(embedding) for embedding in current_embeddings
+                ]
+                embeddings.append(encrypted_embeddings)
+            return embeddings
+
         embeddings = self.__represent(img_path)
         encrypted_embeddings = [self.__encrypt(embedding) for embedding in embeddings]
         return encrypted_embeddings
@@ -271,7 +316,7 @@ class CipherFace:
             },
         }
 
-        threshold = pivot.get(self.facial_recognition_model)[self.distance_metric]
+        threshold = pivot.get(self.model_name)[self.distance_metric]
 
         if self.distance_metric == "euclidean":
             is_verified = plain_distance < threshold**2
