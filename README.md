@@ -48,7 +48,7 @@ When you initialize a CipherFace object, it sets up an FHE cryptosystem. Current
 ```python
 # build a cryptosystem
 onprem = CipherFace(
-    facial_recognition_model="Facenet",
+    model_name="Facenet",
     distance_metric="euclidean",
 )
 
@@ -69,7 +69,7 @@ The cloud can also generate vector embeddings and encrypt them since encryption 
 ```python
 # cloud loads cryptosystem with public key
 onprem = CipherFace(
-    facial_recognition_model="Facenet",
+    model_name="Facenet",
     distance_metric="euclidean",
     cryptosystem="public.txt",
 )
@@ -90,7 +90,7 @@ Once the cloud calculates the encrypted distance, only the on-prem system can de
 ```python
 # on prem loads cryptosystem with private key
 onprem = CipherFace(
-    facial_recognition_model="Facenet",
+    model_name="Facenet",
     distance_metric="euclidean",
     cryptosystem="private.txt",
 )
