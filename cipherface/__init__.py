@@ -43,7 +43,11 @@ class CipherFace:
                 Options: euclidean, cosine
             cryptosystem (str): The path to the cryptosystem. Generates a random
                 private-public key pair if None.
-            security_level (int): The security level of the cryptosystem. Default is 128.
+            security_level (int): The security level of the cryptosystem.
+                Options are 128, 192 and 256. Default is 128.
+                128-bit security level is considered safe until beyond 2030.
+                192-bit security level is considered safe until much beyond 2030.
+                256-bit security level is considered safe until mucher beyond 2030.
             mode (str): The mode of the cryptosystem. Options are offensive and defensive.
                 Default is defensive. In HE, you can offer same security level with different
                 p, q, g values. Offensive mode is offering same security level but slower.
@@ -92,26 +96,32 @@ class CipherFace:
                 assert len(q) >= 3
                 assert q[0] == q[-1]
                 assert q[1] == g
+            # expected lifetime: Beyond 2030
             elif security_level == 128 and mode == "defensive":
                 n = 2**13
                 q = [60, 40, 40, 60]
                 g = 2**40
+            # expected lifetime: Beyond 2030
             elif security_level == 128 and mode == "offensive":
                 n = 2**14
                 q = [31, 60, 60, 60, 60, 60, 60, 31]
                 g = 2**60
+            # expected lifetime: Much Beyond 2030
             elif security_level == 192 and mode == "defensive":
                 n = 2**13
                 q = [60, 40, 60]
                 g = 2**40
+            # expected lifetime: Much Beyond 2030
             elif security_level == 192 and mode == "offensive":
                 n = 2**14
                 q = [60, 60, 60, 60, 60]
                 g = 2**60
+            # expected lifetime: Mucher Beyond 2030
             elif security_level == 256 and mode == "defensive":
                 n = 2**13
                 q = [30, 30, 30, 30]
                 g = 2**30
+            # expected lifetime: Mucher Beyond 2030
             elif security_level == 256 and mode == "offensive":
                 n = 2**14
                 q = [45, 45, 45, 45, 45]
