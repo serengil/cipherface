@@ -141,7 +141,7 @@ Please cite CipherFace in your publications if it helps your research. Here is i
 ```BibTeX
 @misc{serengil2025cipherface,
    title     = {CipherFace: A Fully Homomorphic Encryption-Driven Framework for Secure Cloud-Based Facial Recognition}, 
-   author    = {Serengil, Sefik Ilkin and Ozpinar, Alper},
+   author    = {Serengil, Sefik and Ozpinar, Alper},
    year      = {2025},
    publisher = {arXiv},
    url       = {https://arxiv.org/abs/2502.18514},
