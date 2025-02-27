@@ -6,6 +6,7 @@
 [![Stars](https://img.shields.io/github/stars/serengil/cipherface?color=yellow&style=flat&label=%E2%AD%90%20stars)](https://github.com/serengil/cipherface/stargazers)
 [![License](http://img.shields.io/:license-MIT-green.svg?style=flat)](https://github.com/serengil/cipherface/blob/master/LICENSE)
 [![Tests](https://github.com/serengil/cipherface/actions/workflows/tests.yml/badge.svg)](https://github.com/serengil/cipherface/actions/workflows/tests.yml)
+[![arXiv](https://img.shields.io/badge/arXiv-2502.18514-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2502.18514)
 
 [![Blog](https://img.shields.io/:blog-sefiks.com-blue.svg?style=flat&logo=wordpress)](https://sefiks.com)
 [![YouTube](https://img.shields.io/:youtube-@sefiks-red.svg?style=flat&logo=youtube)](https://www.youtube.com/@sefiks?sub_confirmation=1)
@@ -137,13 +138,14 @@ If you do like this work, then you can support it financially on [Patreon](https
 
 Please cite CipherFace in your publications if it helps your research. Here is its BibTex entry:
 
-```bibtex
-@misc{cipherface,
-  author       = {Serengil, Sefik Ilkin},
-  title        = {CipherFace: A Homomorphic Encryption-Driven Framework for Secure Cloud-Based Facial Recognition},
-  year         = {2024},
-  url          = {https://github.com/serengil/cipherface},
-  note         = {GitHub repository}
+```BibTeX
+@misc{serengil2025cipherface,
+   title     = {CipherFace: A Fully Homomorphic Encryption-Driven Framework for Secure Cloud-Based Facial Recognition}, 
+   author    = {Serengil, Sefik Ilkin and Ozpinar, Alper},
+   year      = {2025},
+   publisher = {arXiv},
+   url       = {https://arxiv.org/abs/2502.18514},
+   doi       = {10.48550/arXiv.2502.18514}
 }
 ```
 
