@@ -44,7 +44,7 @@ from cipherface import CipherFace, CipherFace Lite
 
 # Partially Homomorphic Encryption
 
-You need to initialize CipherFaceLite to use PHE. Currently, [Paillier](https://sefiks.com/2023/04/03/a-step-by-step-partially-homomorphic-encryption-example-with-paillier-in-python/), [Damgard-Jurik](https://sefiks.com/2023/10/20/a-step-by-step-partially-homomorphic-encryption-example-with-damgard-jurik-in-python/), [Okamoto-Uchiyama]https://sefiks.com/2023/10/20/a-step-by-step-partially-homomorphic-encryption-example-with-okamoto-uchiyama-in-python/) cryptosystems are supported in CipherFaceLite.
+You need to initialize CipherFaceLite to use PHE. Currently, [Paillier](https://sefiks.com/2023/04/03/a-step-by-step-partially-homomorphic-encryption-example-with-paillier-in-python/), [Damgard-Jurik](https://sefiks.com/2023/10/20/a-step-by-step-partially-homomorphic-encryption-example-with-damgard-jurik-in-python/), [Okamoto-Uchiyama](https://sefiks.com/2023/10/20/a-step-by-step-partially-homomorphic-encryption-example-with-okamoto-uchiyama-in-python/) cryptosystems are supported in CipherFaceLite.
 
 ## On Prem Encryption
 
