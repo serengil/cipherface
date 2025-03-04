@@ -17,7 +17,7 @@ from cipherface.commons import file_utils, phe_utils
 from cipherface.interfaces.CipherFaceInterface import CipherFaceInterface
 
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 # pylint: disable=unknown-option-value
 
