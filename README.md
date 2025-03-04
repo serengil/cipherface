@@ -18,7 +18,7 @@
 
 </div>
 
-CipherFace is a homomorphic encryption-driven python framework for secure cloud-based facial recognition. It combines [DeepFace](https://github.com/serengil/deepface) and [TenSEAL](https://github.com/OpenMined/TenSEAL) libraries.
+CipherFace is a hybrid homomorphic encryption-driven python framework for secure cloud-based facial recognition supporting both partially homomorphic encryption and fully homomorphic encryption. It combines [DeepFace](https://github.com/serengil/deepface), [LightPHE](https://github.com/serengil/lightphe) and [TenSEAL](https://github.com/OpenMined/TenSEAL) libraries.
 
 ## Installation [![PyPI](https://img.shields.io/pypi/v/cipherface.svg)](https://pypi.org/project/cipherface/)
 
@@ -39,8 +39,85 @@ $ pip install -e .
 Once you installed the library, then you will be able to import it and use its functionalities.
 
 ```python
-from cipherface import CipherFace
+from cipherface import CipherFace, CipherFace Lite
 ```
+
+# Partially Homomorphic Encryption
+
+You need to initialize CipherFaceLite to use PHE. Currently, [Paillier](https://sefiks.com/2023/04/03/a-step-by-step-partially-homomorphic-encryption-example-with-paillier-in-python/), [Damgard-Jurik](https://sefiks.com/2023/10/20/a-step-by-step-partially-homomorphic-encryption-example-with-damgard-jurik-in-python/), [Okamoto-Uchiyama]https://sefiks.com/2023/10/20/a-step-by-step-partially-homomorphic-encryption-example-with-okamoto-uchiyama-in-python/) cryptosystems are supported in CipherFaceLite.
+
+## On Prem Encryption
+
+When you initialize a CipherFaceLite object, it sets up an PHE cryptosystem. Currently, it supports the [`VGG-Face`](https://sefiks.com/2018/08/06/deep-face-recognition-with-keras/), [`Facenet`](https://sefiks.com/2018/09/03/face-recognition-with-facenet-in-keras/), and [`Facenet512`](https://sefiks.com/2018/09/03/face-recognition-with-facenet-in-keras/) facial recognition models; cosine similarity.
+
+```python
+# build a cryptosystem
+onprem = CipherFaceLite(
+    model_name="Facenet",
+    algorithm_name = "Paillier",
+)
+
+# export keys of built cryptosystem
+onprem.export_private_key("private.txt")
+onprem.export_public_key("public.txt")
+
+# create vector embedding for 1st image and encrypt in one shot
+source_embedding_encrypted = onprem.securely_embed(img_path="dataset/img1.jpg")
+```
+
+The on-prem system should generate embeddings for its facial database and encrypt them in advance. This process only needs to be done once to extract the encrypted embeddings. Once encrypted, these embeddings can be securely stored in the cloud.
+
+## Encrypted Similarity Calculation On Cloud
+
+The cloud can also generate vector embeddings. Additionally, it can compute the encrypted distance between a recently generated plain embedding and an encrypted embedding created on the on-prem side.
+
+```python
+# cloud loads cryptosystem with public key
+onprem = CipherFaceLite(
+    model_name="Facenet",
+    algorithm_name = "Paillier",
+    cryptosystem="public.txt",
+)
+
+# create vector embedding for target image and encrypt in one shot
+target_embedding = cloud.represent(img_path="dataset/target.jpg")[0]
+
+# compare encrypted embedding and plain embedding
+encrypted_similarity = cloud.encrypted_compare(
+    source_embedding_encrypted,
+    target_embedding
+)
+```
+
+## On Prem Verification
+
+Once the cloud calculates the encrypted similarity, only the on-prem system can decrypt it since it holds the private key of the cryptosystem. This allows the on-prem system to determine whether the source and target images belong to the same person or different individuals.
+
+```python
+# on prem loads cryptosystem with private key
+onprem = CipherFaceLite(
+    model_name="Facenet",
+    algorithm_name = "Paillier",
+    cryptosystem="private.txt",
+)
+
+# on prem restores distance
+decrypted_similarity = onprem.restore(encrypted_similarity)
+
+# verification
+is_verified = onprem.verify(decrypted_similarity)
+
+if is_verified is True:
+    print("they are same person")
+else:
+    print("they are different persons")
+```
+
+In this setup, the cloud system performs the similarity calculation, utilizing most of the computational power. The on-prem system, holding the private key, is only responsible for decrypting the similarity to determine whether the images belong to the same person or different individuals.
+
+# Fully Homomorphic Encryption
+
+You need to initialize CipherFace object to use FHE.
 
 ## On Prem Encryption
 
@@ -78,7 +155,7 @@ onprem = CipherFace(
 # create vector embedding for target image and encrypt in one shot
 target_embedding_encrypted = cloud.securely_embed(img_path="dataset/target.jpg")[0]
 
-encrypted_distance = cloud.calculate_encrypted_distance(
+encrypted_distance = cloud.encrypted_compare(
     target_embedding_encrypted,
     source_embedding_encrypted
 )
