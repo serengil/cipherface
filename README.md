@@ -213,16 +213,25 @@ If you do like this work, then you can support it financially on [Patreon](https
 
 ## Citation
 
-Please cite CipherFace in your publications if it helps your research. Here is its BibTex entry:
+Please cite CipherFace in your publications if it helps your research. Here is its BibTex entries:
 
 ```BibTeX
-@misc{serengil2025cipherface,
-   title     = {CipherFace: A Fully Homomorphic Encryption-Driven Framework for Secure Cloud-Based Facial Recognition}, 
-   author    = {Serengil, Sefik and Ozpinar, Alper},
-   year      = {2025},
-   publisher = {arXiv},
-   url       = {https://arxiv.org/abs/2502.18514},
-   doi       = {10.48550/arXiv.2502.18514}
+@article{serengil2025cipherfacelite,
+  title={Encrypted Vector Similarity Computations Using Partially Homomorphic Encryption: Applications and Performance Analysis},
+  author={Serengil, Sefik and Ozpinar, Alper},
+  journal={arXiv preprint arXiv:2503.05850},
+  note={doi: 10.48550/arXiv.2503.05850. [Online]. Available: \url{https://arxiv.org/abs/2503.05850}},
+  year={2025}
+}
+```
+
+```BibTeX
+@article{serengil2025cipherface,
+  title={CipherFace: A Fully Homomorphic Encryption-Driven Framework for Secure Cloud-Based Facial Recognition},
+  author={Serengil, Sefik and Ozpinar, Alper},
+  journal={arXiv preprint arXiv:2502.18514},
+  note={doi: 10.48550/arXiv.2502.18514. [Online]. Available: \url{https://arxiv.org/abs/2502.18514}},
+  year={2025}
 }
 ```
 
