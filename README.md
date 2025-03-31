@@ -6,6 +6,7 @@
 [![Stars](https://img.shields.io/github/stars/serengil/cipherface?color=yellow&style=flat&label=%E2%AD%90%20stars)](https://github.com/serengil/cipherface/stargazers)
 [![License](http://img.shields.io/:license-MIT-green.svg?style=flat)](https://github.com/serengil/cipherface/blob/master/LICENSE)
 [![Tests](https://github.com/serengil/cipherface/actions/workflows/tests.yml/badge.svg)](https://github.com/serengil/cipherface/actions/workflows/tests.yml)
+[![arXiv](https://img.shields.io/badge/arXiv-2503.05850-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2503.05850)
 [![arXiv](https://img.shields.io/badge/arXiv-2502.18514-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2502.18514)
 
 [![Blog](https://img.shields.io/:blog-sefiks.com-blue.svg?style=flat&logo=wordpress)](https://sefiks.com)
